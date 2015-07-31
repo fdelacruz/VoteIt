@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Props</title>
+    <title>Synthetic Events</title>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
   </head>
   <body>
@@ -16,6 +16,10 @@
     /** @jsx React.DOM */
 
     var MessageBox = React.createClass({
+
+      handleAdd: function(e) {
+        console.log(this);
+      },
 
       getInitialState: function() {
         return {
@@ -45,7 +49,8 @@
         return (
           <div className="container jumbotron" style={inlineStyles}>
             <h2>Hello World</h2>
-
+            <input type="text" />
+            <button className="btn btn-primary" onClick={this.handleAdd}>Add</button>
             { messages } 
           </div>
         );
