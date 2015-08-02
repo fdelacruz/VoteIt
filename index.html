@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Synthetic Events</title>
+    <title>Refs</title>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
   </head>
   <body>
@@ -18,7 +18,11 @@
     var MessageBox = React.createClass({
 
       handleAdd: function(e) {
-        console.log(this);
+        var newMessage = this.refs.newMessage.getDOMNode().value;
+        var newMessages = this.state.messages.concat([newMessage]);
+        this.setState({
+          messages: newMessages
+        })
       },
 
       getInitialState: function() {
@@ -49,7 +53,7 @@
         return (
           <div className="container jumbotron" style={inlineStyles}>
             <h2>Hello World</h2>
-            <input type="text" />
+            <input ref="newMessage" type="text" />
             <button className="btn btn-primary" onClick={this.handleAdd}>Add</button>
             { messages } 
           </div>
@@ -75,7 +79,6 @@
         );
       }
     });
-
 
     var reactComponent = React.renderComponent(
       <MessageBox />,
