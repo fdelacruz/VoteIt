@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Updating</title>
+    <title>Unmounting</title>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
   </head>
   <body>
@@ -13,6 +13,7 @@
     <script src="http://fb.me/react-0.11.1.js"></script>
     <script src="http://fb.me/JSXTransformer-0.11.1.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
     <script type="text/jsx">
     /** @jsx React.DOM */
@@ -32,7 +33,8 @@
         this.loadData(this.props.url).then(function(data) {
           this.setState({
             metric: data
-          })
+          });
+          $('#tip').tooltip();
         }.bind(this));
       },
 
@@ -46,8 +48,9 @@
         }.bind(this));
       },
 
-      shouldComponentUpdate: function(nextProps, nextState) {
-        return nextState.metric > 100;
+      componentWillUnmount: function() {
+        debugger;
+        $('#tip').tooltip('destroy');
       },
 
       getInitialState: function() {
@@ -61,6 +64,7 @@
         return (
           <div className="jumbotron"> 
             {this.state.lastRoute}
+            <a id="tip" href="#" data-toggle="tooltip" title="Hover!">Hover over me</a>
             <h2>{this.state.metric}</h2>
           </div>
         );
