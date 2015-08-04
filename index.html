@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Mounting</title>
+    <title>Updating</title>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
   </head>
   <body>
@@ -19,32 +19,48 @@
 
     var Dashboard = React.createClass({
 
-      loadData: function() {
-        return $.get('https://gsr-demo.firebaseio-demo.com/' + this.props.url + '/.json')
+      loadData: function(url) {
+        return $.get('https://gsr-demo.firebaseio-demo.com/' + url + '/.json')
       },
 
       componentWillMount: function() {
-        debugger;
+        //debugger;
       },
 
       componentDidMount: function() {
-        debugger;
-        this.loadData().then(function(data) {
+        //debugger;
+        this.loadData(this.props.url).then(function(data) {
           this.setState({
             metric: data
           })
         }.bind(this));
       },
 
+      componentWillReceiveProps: function(nextProps) {
+        var lastUrl = this.props.url;
+        this.loadData(nextProps.url).then(function(data) {
+          this.setState({
+            lastRoute: lastUrl,
+            metric: data
+          });
+        }.bind(this));
+      },
+
+      shouldComponentUpdate: function(nextProps, nextState) {
+        return nextState.metric > 100;
+      },
+
       getInitialState: function() {
         return {
-          metric: 0
+          metric: 0,
+          lastRoute: ''
         };
       },
 
       render: function() {
         return (
           <div className="jumbotron"> 
+            {this.state.lastRoute}
             <h2>{this.state.metric}</h2>
           </div>
         );
