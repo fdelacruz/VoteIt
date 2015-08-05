@@ -1,0 +1,23 @@
+{
+  "name": "getting_started",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "jsx --watch src/ build/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fdelacruz/react.js-getting_started.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fdelacruz/react.js-getting_started/issues"
+  },
+  "homepage": "https://github.com/fdelacruz/react.js-getting_started",
+  "devDependencies": {
+    "react-tools": "^0.11.2"
+  }
+}
