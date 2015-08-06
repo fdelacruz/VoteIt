@@ -19,5 +19,8 @@
   "homepage": "https://github.com/fdelacruz/react.js-getting_started",
   "devDependencies": {
     "react-tools": "^0.11.2"
+  },
+  "dependencies": {
+    "react": "^0.11.2"
   }
 }
