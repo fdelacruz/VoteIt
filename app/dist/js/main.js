@@ -15,8 +15,23 @@ var Feed  = React.createClass({displayName: 'Feed',
 			{ key: '3', title: 'Coffee makes you awake', description: 'Drink responsibly', voteCount: 15},
 		];
 		return {
-			items: FEED_ITEMS
+			items: FEED_ITEMS,
+			formDisplayed: false
 		}
+	},
+
+	onToggleForm: function() {
+		this.setState({
+			formDisplayed: !this.state.formDisplayed
+		});	
+	},
+
+	onNewItem: function(newItem) {
+		var newItems = this.state.items.concat([newItem]);
+		this.setState({
+			items: newItems,
+			formDisplayed: false
+		});
 	},
 
 	render: function() {
@@ -24,10 +39,10 @@ var Feed  = React.createClass({displayName: 'Feed',
 			React.DOM.div(null, 
 
 				React.DOM.div({className: "container"}, 
-					ShowAddButton(null)
+					ShowAddButton({displayed: this.state.formDisplayed, onToggleForm: this.onToggleForm})
 				), 
 
-				FeedForm(null), 
+				FeedForm({displayed: this.state.formDisplayed, onNewItem: this.onNewItem}), 
 
 				React.DOM.br(null), 
 				React.DOM.br(null), 
@@ -49,12 +64,30 @@ var React = require('react');
 
 var FeedForm  = React.createClass({displayName: 'FeedForm',
 
+	handleForm: function(e) {
+		e.preventDefault();	
+
+		var newItem = {
+			title: this.refs.title.getDOMNode().value,
+			description: this.refs.desc.getDOMNode().value,
+			voteCount: 0
+		};
+
+		this.refs.feedForm.getDOMNode().reset();
+
+		this.props.onNewItem(newItem);
+	},
+
 	render: function() {
+		var display = this.props.displayed ? 'block': 'none';
+		var styles = {
+			display: display
+		};
 		return (
-			React.DOM.form({className: "container"}, 
+			React.DOM.form({ref: "feedForm", style: styles, id: "feedForm", className: "container", onSubmit: this.handleForm}, 
 				React.DOM.div({className: "form-group"}, 
-					React.DOM.input({type: "text", className: "form-control", placeholder: "Title"}), 
-					React.DOM.input({type: "text", className: "form-control", placeholder: "Description"}), 
+					React.DOM.input({ref: "title", type: "text", className: "form-control", placeholder: "Title"}), 
+					React.DOM.input({ref: "desc", type: "text", className: "form-control", placeholder: "Description"}), 
 					React.DOM.button({type: "submit", className: "btn btn-primary btn-block"}, "Add")
 				)
 			)
@@ -105,9 +138,11 @@ var FeedList = React.createClass({displayName: 'FeedList',
 		});
 
 		return (
-          React.DOM.ul({className: "list-group container"}, 
-			feedItems
-          )
+		  React.DOM.div({className: "container"}, 
+			React.DOM.ul({className: "list-group"}, 
+				feedItems
+			)
+		  )
 		);
 	}
 
@@ -123,8 +158,22 @@ var React = require('react');
 var ShowAddButton  = React.createClass({displayName: 'ShowAddButton',
 
 		render: function() {
+
+			var classString, buttonText;
+
+			if (this.props.displayed) {
+				classString = 'btn btn-defaut btn-block';
+				buttonText = 'Cancel';
+			} else {
+				classString = 'btn btn-success btn-block';
+				buttonText = 'Create new item';
+			}
+
 			return (
-          		React.DOM.button({className: "btn btn-success btn-block"}, "Create New Item")
+          		React.DOM.button({className: classString, 
+						onClick: this.props.onToggleForm}, 
+				   		buttonText
+				)
 			);
 		}
 

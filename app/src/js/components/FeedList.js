@@ -12,9 +12,11 @@ var FeedList = React.createClass({
 		});
 
 		return (
-          <ul className="list-group container">
-			{feedItems}
-          </ul>
+		  <div className="container">
+			<ul className="list-group">
+				{feedItems}
+			</ul>
+		  </div>
 		);
 	}
 
