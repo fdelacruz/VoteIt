@@ -4,6 +4,7 @@ var React 			= require('react');
 var ShowAddButton 	= require('./ShowAddButton');
 var FeedForm      	= require('./FeedForm');
 var FeedList      	= require('./FeedList');
+var _ 				= require('lodash');
 
 var Feed  = React.createClass({
 
@@ -29,7 +30,21 @@ var Feed  = React.createClass({
 		var newItems = this.state.items.concat([newItem]);
 		this.setState({
 			items: newItems,
-			formDisplayed: false
+			formDisplayed: false,
+			key: this.state.items.length
+		});
+	},
+
+	onVote: function(item) {
+		var items = _.uniq(this.state.items);
+		var index = _.findIndex(items, function(feedItems) {
+			return feedItems.key === item.key;
+		});
+		var oldObj = items[index];
+		var newItems = _.pull(items, oldObj);
+		newItems.push(item);
+		this.setState({
+			items: newItems
 		});
 	},
 
@@ -46,7 +61,7 @@ var Feed  = React.createClass({
 				<br />
 				<br />
 
-				<FeedList items={this.state.items} />
+				<FeedList items={this.state.items} onVote={this.onVote} />
 
 			</div>
 		);
